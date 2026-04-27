@@ -1,8 +1,7 @@
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.AI;
 using Photon.Pun;
 using Photon.Realtime;
-
 public class IA_Enemigo : MonoBehaviour
 {   
     [SerializeField] private NavMeshAgent agente;
@@ -10,18 +9,15 @@ public class IA_Enemigo : MonoBehaviour
     private float velEnemigo;
     private float dist;
     private float frecAtaque = 2.5f, tiempSigAtaque = 0, iniciaConteo;
-    public static int vidaEnemigo;
-
+    public int vidaEnemigo; // ← quitado static
     public Hordas hordas;
     public PhotonView pvEnemigo;
 	
-
     void Start()
     {
         player = GameObject.Find("Capsule");
         hordas = GameObject.Find("Hordas").GetComponent<Hordas>();
         agente = GetComponent<NavMeshAgent>();
-
         dist = Vector3.Distance(player.transform.position, transform.position);
         agente.speed = Random.Range(1.0f, 5.0f);
         vidaEnemigo = 1;
@@ -30,7 +26,6 @@ public class IA_Enemigo : MonoBehaviour
     void Update()
     {
         dist = Vector3.Distance(player.transform.position, transform.position);
-
         if(tiempSigAtaque > 0)
         {
             tiempSigAtaque = frecAtaque + iniciaConteo - Time.time;
@@ -53,26 +48,37 @@ public class IA_Enemigo : MonoBehaviour
         }
     }
 
-   public void TomarDano(int dano){
-		pvEnemigo.RPC("AplicarDemo", RpcTarget.All, dano, pvEnemigo.ViewID);		
-	}
+    public void TomarDano(int dano)
+    {
+        if (PhotonNetwork.InRoom)
+        {
+            pvEnemigo.RPC("AplicarDemo", RpcTarget.All, dano, pvEnemigo.ViewID);
+        }
+        else
+        {
+            AplicarDemo(dano, 0);
+        }
+    }
 
-	[PunRPC]
-	public void AplicarDemo(int dano,int viewID)
-	{
-		if (pvEnemigo.ViewID == viewID)
-		{
-			vidaEnemigo -= dano;
-			if (vidaEnemigo <= 0)
-			{
-				if(!PhotonNetwork.InRoom || (PhotonNetwork.IsMasterClient && pvEnemigo.IsMine))
-				{
-					Debug.Log("Decrementa en Horda");
-					hordas.enemigosVivos--;
-				}
-				Destroy(gameObject);				
-			}
-		}
-	}
-
+    [PunRPC]
+    public void AplicarDemo(int dano, int viewID)
+    {
+        if (!PhotonNetwork.InRoom || pvEnemigo.ViewID == viewID)
+        {
+            vidaEnemigo -= dano;
+            if (vidaEnemigo <= 0)
+            {
+                if (!PhotonNetwork.InRoom)
+                {
+                    hordas.enemigosVivos--;
+                    Destroy(gameObject);
+                }
+                else if (PhotonNetwork.IsMasterClient && pvEnemigo.IsMine)
+                {
+                    hordas.enemigosVivos--;
+                    PhotonNetwork.Destroy(gameObject);
+                }
+            }
+        }
+    }
 }
