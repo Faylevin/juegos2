@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
+using Photon.Pun;
+using Photon.Realtime;
 
 public class IA_Enemigo : MonoBehaviour
 {   
@@ -10,9 +12,14 @@ public class IA_Enemigo : MonoBehaviour
     private float frecAtaque = 2.5f, tiempSigAtaque = 0, iniciaConteo;
     public static int vidaEnemigo;
 
+    public Hordas hordas;
+    public PhotonView pvEnemigo;
+	
+
     void Start()
     {
         player = GameObject.Find("Capsule");
+        hordas = GameObject.Find("Hordas").GetComponent<Hordas>();
         agente = GetComponent<NavMeshAgent>();
 
         dist = Vector3.Distance(player.transform.position, transform.position);
@@ -46,13 +53,26 @@ public class IA_Enemigo : MonoBehaviour
         }
     }
 
-    public void TomarDano(int dano)
-    {
-        vidaEnemigo -= dano;
+   public void TomarDano(int dano){
+		pvEnemigo.RPC("AplicarDemo", RpcTarget.All, dano, pvEnemigo.ViewID);		
+	}
 
-        if(vidaEnemigo <= 0)
-        {
-            Destroy(gameObject);
-        }
-    }
+	[PunRPC]
+	public void AplicarDemo(int dano,int viewID)
+	{
+		if (pvEnemigo.ViewID == viewID)
+		{
+			vidaEnemigo -= dano;
+			if (vidaEnemigo <= 0)
+			{
+				if(!PhotonNetwork.InRoom || (PhotonNetwork.IsMasterClient && pvEnemigo.IsMine))
+				{
+					Debug.Log("Decrementa en Horda");
+					hordas.enemigosVivos--;
+				}
+				Destroy(gameObject);				
+			}
+		}
+	}
+
 }

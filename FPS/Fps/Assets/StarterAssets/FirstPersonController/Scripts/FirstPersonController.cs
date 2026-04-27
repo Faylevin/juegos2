@@ -1,12 +1,14 @@
 ﻿using UnityEngine;
-#if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
 using UnityEngine.InputSystem;
 #endif
+using Photon.Pun;
+using Cinemachine;
 
 namespace StarterAssets
 {
 	[RequireComponent(typeof(CharacterController))]
-#if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
 	[RequireComponent(typeof(PlayerInput))]
 #endif
 	public class FirstPersonController : MonoBehaviour
@@ -65,20 +67,21 @@ namespace StarterAssets
 		private float _fallTimeoutDelta;
 
 	
-#if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
 		private PlayerInput _playerInput;
 #endif
 		private CharacterController _controller;
 		private StarterAssetsInputs _input;
-		private GameObject _mainCamera;
+		[SerializeField] private GameObject _mainCamera;
 
 		private const float _threshold = 0.01f;
-
+		[SerializeField] PhotonView pv;
+		[SerializeField] CinemachineVirtualCamera vcam;
 		private bool IsCurrentDeviceMouse
 		{
 			get
 			{
-				#if ENABLE_INPUT_SYSTEM
+				#if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
 				return _playerInput.currentControlScheme == "KeyboardMouse";
 				#else
 				return false;
@@ -99,12 +102,14 @@ namespace StarterAssets
 		{
 			_controller = GetComponent<CharacterController>();
 			_input = GetComponent<StarterAssetsInputs>();
-#if ENABLE_INPUT_SYSTEM
+#if ENABLE_INPUT_SYSTEM && STARTER_ASSETS_PACKAGES_CHECKED
 			_playerInput = GetComponent<PlayerInput>();
 #else
 			Debug.LogError( "Starter Assets package is missing dependencies. Please use Tools/Starter Assets/Reinstall Dependencies to fix it");
 #endif
-
+			pv = GetComponent<PhotonView>();
+			if(PhotonNetwork.InRoom && pv.IsMine) _mainCamera.SetActive(false);
+			if(PhotonNetwork.InRoom && pv.IsMine) vcam = GameObject.Find("PlayerFollowCamera").GetComponent<CinemachineVirtualCamera>();
 			// reset our timeouts on start
 			_jumpTimeoutDelta = JumpTimeout;
 			_fallTimeoutDelta = FallTimeout;
@@ -112,6 +117,18 @@ namespace StarterAssets
 
 		private void Update()
 		{
+			if (PhotonNetwork.InRoom && pv.IsMine)
+			{
+				Debug.Log(PhotonNetwork.LocalPlayer.ActorNumber.ToString());
+			}
+			else
+			{
+				Debug.Log(PhotonNetwork.LocalPlayer.ActorNumber.ToString());
+			}
+			if (PhotonNetwork.InRoom && !pv.IsMine)
+			{
+				return ;
+			}
 			JumpAndGravity();
 			GroundedCheck();
 			Move();
@@ -119,6 +136,12 @@ namespace StarterAssets
 
 		private void LateUpdate()
 		{
+			if (PhotonNetwork.InRoom && pv.IsMine)
+			{
+				vcam.enabled = true;
+				vcam.Priority = 21;
+				_mainCamera.SetActive(true);
+			}
 			CameraRotation();
 		}
 
