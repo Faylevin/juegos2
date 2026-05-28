@@ -1,0 +1,2 @@
+C:\Users\demul\OneDrive\Desktop\ProyectoMapeo\MapeoDeCaras\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\CMakeLists.txt
+C:\Users\demul\OneDrive\Desktop\ProyectoMapeo\MapeoDeCaras\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\src\main\cpp\GameActivity\CMakeLists.txt

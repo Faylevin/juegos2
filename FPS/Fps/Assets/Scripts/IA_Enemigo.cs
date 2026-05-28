@@ -9,7 +9,7 @@ public class IA_Enemigo : MonoBehaviour
     private float velEnemigo;
     private float dist;
     private float frecAtaque = 2.5f, tiempSigAtaque = 0, iniciaConteo;
-    public int vidaEnemigo; // ← quitado static
+    public int vidaEnemigo;
     public Hordas hordas;
     public PhotonView pvEnemigo;
 	
@@ -18,8 +18,16 @@ public class IA_Enemigo : MonoBehaviour
         player = GameObject.Find("Capsule");
         hordas = GameObject.Find("Hordas").GetComponent<Hordas>();
         agente = GetComponent<NavMeshAgent>();
+
+        // ← Reposiciona al NavMesh si está fuera
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(transform.position, out hit, 5.0f, NavMesh.AllAreas))
+        {
+            agente.Warp(hit.position);
+        }
+
         dist = Vector3.Distance(player.transform.position, transform.position);
-        agente.speed = Random.Range(1.0f, 5.0f);
+        agente.speed = Random.Range(3.0f, 8.0f);
         vidaEnemigo = 1;
     }
 
@@ -33,7 +41,10 @@ public class IA_Enemigo : MonoBehaviour
         else
         {
             tiempSigAtaque = 0;
-            agente.SetDestination(player.transform.position);
+            if(agente.isOnNavMesh) // ← protección
+            {
+                agente.SetDestination(player.transform.position);
+            }
             VidasPlayer.puedePerderVida = 1;
         }
     }

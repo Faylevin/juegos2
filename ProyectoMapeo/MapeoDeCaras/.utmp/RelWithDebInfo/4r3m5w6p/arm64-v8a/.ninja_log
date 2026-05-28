@@ -1,0 +1,10 @@
+# ninja log v5
+39	3361	7998961713301027	GameActivity/CMakeFiles/game.dir/UGAEntry.cpp.o	bce74cd67a4f5a2d
+70	3394	7998961713301027	GameActivity/CMakeFiles/game.dir/UGAInputKeyEvent.cpp.o	98f5249e16b36812
+27	3402	7998961713818237	GameActivity/CMakeFiles/game.dir/UGAConfiguration.cpp.o	b17dd748abfa999e
+128	3427	7998961714122833	GameActivity/CMakeFiles/game.dir/UGAInputMotionEvent.cpp.o	7f7b61ab6bc3a2a1
+0	3621	7998961715890913	GameActivity/CMakeFiles/game.dir/UGADebug.cpp.o	50aef41576e03532
+91	3875	7998961718737571	GameActivity/CMakeFiles/game.dir/UGASoftKeyboard.cpp.o	6d3f3aae451d2923
+52	4067	7998961720336268	GameActivity/CMakeFiles/game.dir/UGAInput.cpp.o	c2a41ead05da8c24
+14	4227	7998961721810736	GameActivity/CMakeFiles/game.dir/UGAApplication.cpp.o	7149777fd995e924
+4227	4495	7998961724969789	C:/Users/demul/OneDrive/Desktop/ProyectoMapeo/MapeoDeCaras/Library/Bee/Android/Prj/IL2CPP/Gradle/unityLibrary/build/intermediates/cxx/RelWithDebInfo/4r3m5w6p/obj/arm64-v8a/libgame.so	b9fb89d8ff55eed

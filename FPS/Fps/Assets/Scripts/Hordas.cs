@@ -26,7 +26,7 @@ public class Hordas : MonoBehaviour
     }
 
   private void SiguienteOleada(int ronda){
-		for (int i = 0; i < ronda; i++){
+		for (int i = 0; i < ronda * 5; i++){
 			int randomPos = Random.Range(0, puntosDeSpawn.Length);
 			GameObject puntoEmision = puntosDeSpawn[randomPos];
 			GameObject instanciaEnemigo;

@@ -1,13 +1,28 @@
-# Archivos y carpetas de Unity a ignorar
+# =========================
+# Unity Generated Folders
+# =========================
 [Ll]ibrary/
 [Tt]emp/
 [Oo]bj/
 [Bb]uild/
 [Bb]uilds/
 [Ll]ogs/
-[Uu]serSettings/
+UserSettings/
 
-# Archivos de Visual Studio
+# =========================
+# MemoryCaptures
+# =========================
+[Mm]emoryCaptures/
+
+# =========================
+# Asset meta data (IMPORTANT)
+# =========================
+!/[Aa]ssets/**/*.meta
+!/[Pp]ackages/**/*.meta
+
+# =========================
+# Visual Studio / Rider
+# =========================
 .vs/
 *.csproj
 *.unityproj
@@ -18,7 +33,34 @@
 *.userprefs
 *.pidb
 *.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
 
-# Archivos del sistema operativo
+# =========================
+# OS files
+# =========================
 .DS_Store
 Thumbs.db
+
+# =========================
+# Unity Cloud / Collab
+# =========================
+.collab/
+
+# =========================
+# Builds (no subir ejecutables)
+# =========================
+*.apk
+*.aab
+*.unitypackage
+*.app
+*.exe
+*.ipa
+
+# =========================
+# Addressables / Cache
+# =========================
+ServerData/

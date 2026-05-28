@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 using Photon.Pun;
 using Photon.Realtime;
 using UnityEngine.UI;
@@ -8,11 +8,20 @@ using UnityEngine.SceneManagement;
 public class NetworkManager : MonoBehaviourPunCallbacks
 {
    public Button btnMultiPlayer;
-    void Start()
+  void Start()
+{
+    btnMultiPlayer.interactable = false; // ← desactiva el botón al inicio
+    if (!PhotonNetwork.IsConnected)
     {
         Debug.Log("Conexion a Servidor");
-        PhotonNetwork.ConnectUsingSettings(); // Establece las caracteristicas de conexion
+        PhotonNetwork.ConnectUsingSettings();
     }
+    else
+    {
+        Debug.Log("Ya conectado, uniendo al Lobby");
+        PhotonNetwork.JoinLobby();
+    }
+}
 
 
     public override void OnConnectedToMaster() //Cuando se haga la conexion

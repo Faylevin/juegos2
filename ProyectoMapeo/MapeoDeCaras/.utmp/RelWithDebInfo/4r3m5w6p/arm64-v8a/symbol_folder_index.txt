@@ -1,0 +1,1 @@
+C:\Users\demul\OneDrive\Desktop\ProyectoMapeo\MapeoDeCaras\Library\Bee\Android\Prj\IL2CPP\Gradle\unityLibrary\build\intermediates\cxx\RelWithDebInfo\4r3m5w6p\obj\arm64-v8a

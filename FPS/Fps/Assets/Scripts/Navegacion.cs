@@ -45,5 +45,6 @@ public class Navegacion : MonoBehaviour
             .GetComponent<TMP_InputField>().text;
 
         SceneManager.LoadScene("Playground");
+
     }
 }
